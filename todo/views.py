@@ -76,11 +76,7 @@ def add_new_task(request):
         title=task
         obj=Task(username_id=username_id,title=task)
         obj.save()
-        send={
-            'id': '1',
-            'name': 'xyz,'
-        }
-    return JsonResponse(send)
+    return Response('What!')
 
 @api_view(['GET'])
 def get_task(request):

@@ -69,6 +69,10 @@
 
 </head>
 <body>
+  <form action="{% url 'todo:logout'%}">
+    <button  id="logout" type="submit" class="btn btn-outline-primary">Logout</button>
+  </form>
+
 	<div class="container">
 
 		<div id="task-container">
@@ -105,8 +109,9 @@
       console.log(text.value)
 
       $.ajax({
-        url: "../add_new_task/",
-        type: "POST",
+        headers: { "X-CSRFToken": token },
+        url: "add_new_task/",
+        type: 'POST',
         // headers: {
         //    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         //  },
@@ -114,21 +119,23 @@
         data:{
             task:text.value
         },
-        headers: { "X-CSRFToken": token },
-        //me kariu tya toi notu chaltu    ok ek MinimumLengthValidator
-        success: function(response){ // aaya kaik aave ne
+
+
+        success: function(response){
           console.log('Done')
+          console.log(window.location.href);
+          location.reload();
         },
         error: function(){
           console.log("error")
         }
       });
-      location.reload();
+      //reload_page()
     }
 
     $.ajax({
         headers: { "X-CSRFToken": token },
-        url: "../get_task/",
+        url: "get_task/",
         type: "GET",
         data: {
 
@@ -175,17 +182,6 @@
       console.log('Edit');
       console.log(buttonid);
       window.open('edit_task/'+buttonid+'/','_self');
-      /*$.ajax({
-        headers: { "X-CSRFToken": token },
-        url: "../edit_task/",
-        type: "POST",
-        data:{
-          id: buttonid,
-        },
-        success: function(response){
-          console.log(response)
-        }
-      });*/
     }
 
     function delete_button(buttonid){
@@ -193,33 +189,17 @@
       console.log(buttonid);
       $.ajax({
         headers: { "X-CSRFToken": token },
-        url: "../delete_task/",
+        url: "delete_task/",
         type: "POST",
         data:{
           id: buttonid,
         },
         success: function(response){
           console.log(response)
+          location.reload();
         }
       });
-      location.reload();
     }
-    //
-    //
-    // $.ajax({
-    //     url: "/chat/set-session-time-limit/",
-    //     type: "POST",
-    //     headers: {
-    //         'X-CSRFToken': CSRF_TOKEN
-    //     },
-    //     data: {},
-    //     success: function(response) {
-    //         set_cookie("is_online", "1", "/");
-    //     },
-    //     error: function(xhr, textstatus, errorthrown) {
-    //         set_cookie("is_online", "0", "/");
-    //     }
-    // });
 
 
   </script>
